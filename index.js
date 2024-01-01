@@ -39,6 +39,7 @@ const submitHandler = event => {
         }, 3500);
     }
 
+    //blur input
     searchInputEl.blur();
 
      //remove previous job items
@@ -101,7 +102,7 @@ const submitHandler = event => {
     })
 }
 
-//blur input
+
 
 
 
