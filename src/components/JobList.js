@@ -69,7 +69,7 @@ document.querySelector('.job-item--active')?.classList.remove('job-item--active'
     </div>
     <div class="job-info__right">
         <h2 class="second-heading">${jobItem.title}</h2>
-        <p class="job-info__company">${jobItem.compay}</p>
+        <p class="job-info__company">${jobItem.company}</p>
         <p class="job-info__description">${jobItem.description}.</p>
         <div class="job-info__extras">
             <p class="job-info__extra"><i class="fa-solid fa-clock job-info__extra-icon"></i>${jobItem.duration}</p>
