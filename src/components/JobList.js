@@ -65,8 +65,7 @@ document.querySelector('.job-item--active')?.classList.remove('job-item--active'
      //fetch job item data
      fetch(`${BASE_API_URL}/jobs/${id}`).then(res => {
         if(!res.ok){
-            console.log('Something went wrong');
-            return ;
+            throw new Error("Resource issue (e.g. resourse doesn't exist) or server issue");
         }
         return res.json();
      }).then(data => {
@@ -80,7 +79,10 @@ document.querySelector('.job-item--active')?.classList.remove('job-item--active'
     renderJobDetails(jobItem);
     
 
-     }).catch( error => console.log(error));
+     }).catch(error => { //network problem or other problem
+        renderSpinner('spinner');
+        renderError(error.message);
+    });
 
 }
 

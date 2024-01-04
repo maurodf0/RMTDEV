@@ -39,8 +39,8 @@ const submitHandler = event => {
     fetch(`${BASE_API_URL}/jobs?search=${searchText}`)
     .then(res => {
         if(!res.ok){
-            console.log('Something went wrong');
-            return;
+            // what you in throw is what you find in the parameters
+            throw new Error("Resource issue (e.g. resourse doesn't exist) or server issue");
         }
         return res.json();
     }).then(data => {
@@ -58,9 +58,10 @@ const submitHandler = event => {
             //render the job items inside the list from external component
         renderJobList(jobItems);   
 
-    }).catch(error => {
-        console.log(error);
-    })
+    }).catch(error => { //network problem or other problem
+        renderSpinner('search');
+        renderError(error.message);
+    });
 }
 
 searchFormEl.addEventListener('submit', submitHandler);
