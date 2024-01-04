@@ -5,6 +5,7 @@ import {
 } from '../common.js';
 import renderJobDetails from './JobDetails.js';
 import renderSpinner from './Spinner.js';
+import renderError from './Error.js';
 
 // create the blueprint of the function that we export and use into the search component
 const renderJobList = jobItemsArray => {
@@ -33,7 +34,7 @@ const renderJobList = jobItemsArray => {
     })    
 }
 
-const clickHandler = e => {
+const clickHandler = async e => {
     e.preventDefault();
 
     // get clicked job item
@@ -61,30 +62,51 @@ document.querySelector('.job-item--active')?.classList.remove('job-item--active'
 
     //get the id of the clicked job item
      const id = jobItemEl.children[0].getAttribute('href');
-
-     //fetch job item data
-     fetch(`${BASE_API_URL}/jobs/${id}`).then(res => {
-        if(!res.ok){
-            throw new Error("Resource issue (e.g. resourse doesn't exist) or server issue");
-        }
-        return res.json();
-     }).then(data => {
-        console.log(data);
-        const { jobItem } = data;
+     
+     try {
+         const response = await fetch(`${BASE_API_URL}/jobs/${id}`);
+         const data = await response.json();
+         if(!response.ok){
+            throw new Error(data.description);
+         }
+    
+         const { jobItem } = data;
         //remove the spinner
         renderSpinner('jobDetails');
-
-
-    //render job details item
-    renderJobDetails(jobItem);
     
-
-     }).catch(error => { //network problem or other problem
+        //render job details item
+        renderJobDetails(jobItem);
+        
+     } catch (error) {
         renderSpinner('spinner');
         renderError(error.message);
-    });
+     }
+
+
+    //  //fetch job item data
+    //  fetch(`${BASE_API_URL}/jobs/${id}`).then(res => {
+    //     if(!res.ok){
+    //         throw new Error("Resource issue (e.g. resourse doesn't exist) or server issue");
+    //     }
+    //     return res.json();
+    //  }).then(data => {
+    //     console.log(data);
+    //     const { jobItem } = data;
+    //     //remove the spinner
+    //     renderSpinner('jobDetails');
+
+
+    // //render job details item
+    // renderJobDetails(jobItem);
+    
+
+    //  }).catch(error => { //network problem or other problem
+    //     renderSpinner('spinner');
+    //     renderError(error.message);
+    // });
 
 }
+
 
 jobListSearchEl.addEventListener('click', clickHandler);
 
