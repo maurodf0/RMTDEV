@@ -11,6 +11,10 @@ import renderError from './Error.js';
 
 // create the blueprint of the function that we export and use into the search component
 const renderJobList = () => {
+    //remove previus item
+    jobListSearchEl.innerHTML = '';
+
+    //display jobs
     state.searchJobItems.slice(0,7).forEach(jobItem => {
         const newJobItemHTML = 
         `<li class="job-item">
