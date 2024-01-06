@@ -2,15 +2,16 @@ import {
     jobListSearchEl,
     jobDetailsContentEl,
     BASE_API_URL,
-    getData
+    getData,
+    state
 } from '../common.js';
 import renderJobDetails from './JobDetails.js';
 import renderSpinner from './Spinner.js';
 import renderError from './Error.js';
 
 // create the blueprint of the function that we export and use into the search component
-const renderJobList = jobItemsArray => {
-    jobItemsArray.slice(0,7).forEach(jobItem => {
+const renderJobList = () => {
+    state.searchJobItems.slice(0,7).forEach(jobItem => {
         const newJobItemHTML = 
         `<li class="job-item">
             <a class="job-item__link" href="${jobItem.id}">

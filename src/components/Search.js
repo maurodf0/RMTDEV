@@ -4,7 +4,8 @@ import {
     jobListSearchEl,
     numberEl,
     BASE_API_URL,
-    getData
+    getData,
+    state
 } from '../common.js';
 import renderError from './Error.js';
 import renderJobList from './JobList.js';
@@ -43,6 +44,9 @@ const submitHandler = async event => {
         //extract job Items - you can rename the new item with double point
         const { jobItems } = data;    
         console.log(jobItems);
+
+        //update state
+        state.searchJobItems = jobItems
      
          //remove spinner function from spinner component
         renderSpinner('search');
@@ -51,7 +55,7 @@ const submitHandler = async event => {
         numberEl.textContent = jobItems.length;
      
         //render the job items inside the list from external component
-        renderJobList(jobItems);   
+        renderJobList();   
         
     } catch (error) {
         renderSpinner('search');
