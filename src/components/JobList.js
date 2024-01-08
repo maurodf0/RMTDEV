@@ -3,7 +3,8 @@ import {
     jobDetailsContentEl,
     BASE_API_URL,
     getData,
-    state
+    state,
+    RESULTS_FOR_PAGE,
 } from '../common.js';
 import renderJobDetails from './JobDetails.js';
 import renderSpinner from './Spinner.js';
@@ -15,7 +16,7 @@ const renderJobList = () => {
     jobListSearchEl.innerHTML = '';
 
     //display jobs
-    state.searchJobItems.slice(0,7).forEach(jobItem => {
+    state.searchJobItems.slice(state.currentPage * RESULTS_FOR_PAGE - RESULTS_FOR_PAGE , state.currentPage * RESULTS_FOR_PAGE).forEach(jobItem => {
         const newJobItemHTML = 
         `<li class="job-item">
             <a class="job-item__link" href="${jobItem.id}">

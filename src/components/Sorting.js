@@ -6,12 +6,16 @@ import {
 
 } from '../common.js'
 import renderJobList from './JobList.js';
+import renderPaginationButtons from './Pagination.js';
 
 const clickHandler = e => {
     //get clicked btn
     const clickedBtnEl = e.target.closest('.sorting__button');
 
     if(!clickedBtnEl) return;
+
+    //update the state (reset to page 1)
+    state.currentPage = 1;
 
    const recent = clickedBtnEl.className.includes('--recent') ? true : false ;
 
@@ -33,6 +37,9 @@ const clickHandler = e => {
         return b.relevanceScore - a.relevanceScore;
     })
    }
+
+   //render pagination
+   renderPaginationButtons();
 
    //render the new job list sorted
    renderJobList();
