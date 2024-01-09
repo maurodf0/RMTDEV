@@ -1,6 +1,7 @@
 import {
     jobDetailsContentEl,
     BASE_API_URL,
+    state,
     getData,
 } from '../common.js'
 import renderError from './Error.js';
@@ -22,6 +23,9 @@ const loadHashChangeHandler = async () => {
             const data = await getData(`${BASE_API_URL}/jobs/${id}`);
          
             const { jobItem } = data;
+
+            //update state
+            state.activeJobItem = jobItem;
 
              //remove the spinner
              renderSpinner('jobDetails');
