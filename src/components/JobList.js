@@ -69,6 +69,9 @@ document.querySelector('.job-item--active')?.classList.remove('job-item--active'
 
     //get the id of the clicked job item
      const id = jobItemEl.children[0].getAttribute('href');
+
+     //add id to the url
+     history.pushState(null, '', `/#${id}`);
      
      try {
        const data = await getData(`${BASE_API_URL}/jobs/${id}`);
