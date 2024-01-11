@@ -5,18 +5,32 @@ import {
     getData,
     state,
     RESULTS_FOR_PAGE,
+    jobListBookmarksEl,
 } from '../common.js';
 import renderJobDetails from './JobDetails.js';
 import renderSpinner from './Spinner.js';
 import renderError from './Error.js';
+//import BookmarkIconF from './Bookmarks.js';
 
 // create the blueprint of the function that we export and use into the search component
-const renderJobList = () => {
+const renderJobList = (whichJobList = 'search') => {
+
+    //determine correct selector for joblist (search or bookmark)
+    const jobListEl = whichJobList === 'search' ? jobListSearchEl : jobListBookmarksEl;
+
     //remove previus item
-    jobListSearchEl.innerHTML = '';
+    jobListEl.innerHTML = '';
+
+    // determine the jon item that should be rendered
+    let jobItemsArray;
+    if(whichJobList === 'search'){
+        jobItemsArray = state.searchJobItems.slice(state.currentPage * RESULTS_FOR_PAGE - RESULTS_FOR_PAGE , state.currentPage * RESULTS_FOR_PAGE)
+    } else if (whichJobList === 'bookmarks'){
+        jobItemsArray = state.bookmarkJobItems;
+    }
 
     //display jobs
-    state.searchJobItems.slice(state.currentPage * RESULTS_FOR_PAGE - RESULTS_FOR_PAGE , state.currentPage * RESULTS_FOR_PAGE).forEach(jobItem => {
+    jobItemsArray.forEach(jobItem => {
         const newJobItemHTML = 
         `<li class="job-item ${state.activeJobItem.id === jobItem.id ? 'job-item--active' : ''}">
             <a class="job-item__link" href="${jobItem.id}">
@@ -37,7 +51,7 @@ const renderJobList = () => {
             </a>
         </li>`
     
-    jobListSearchEl.insertAdjacentHTML('beforeend', newJobItemHTML);
+        jobListEl.insertAdjacentHTML('beforeend', newJobItemHTML);
     })    
 }
 
@@ -57,8 +71,13 @@ const clickHandler = async e => {
 //more compact way with &&
 // document.querySelector('.job-item--active') && document.querySelector('.job-item--active').classList.remove('job-item--active');
 
-//actual way with ? operator
-document.querySelector('.job-item--active')?.classList.remove('job-item--active');
+//actual way with ? operator for remove active class even if non existent
+//document.querySelector('.job-item--active')?.classList.remove('job-item--active');
+
+//with this one we don't need "?" or if cause querySelectorAll not give an error if the element not exist
+document.querySelectorAll('.job-item--active').forEach(jobItemActive => {
+    jobItemActive.classList.remove('job-item--active');
+});
 
    jobItemEl.classList.add('job-item--active');
     // empty the inner html for job detail content
@@ -86,6 +105,9 @@ document.querySelector('.job-item--active')?.classList.remove('job-item--active'
     
         //render job details item
         renderJobDetails(jobItem);
+
+        //test with export function
+        //BookmarkIconF();
         
      } catch (error) {
         renderSpinner('jobDetails');
@@ -118,6 +140,8 @@ document.querySelector('.job-item--active')?.classList.remove('job-item--active'
 }
 
 
+
 jobListSearchEl.addEventListener('click', clickHandler);
+jobListBookmarksEl.addEventListener('click', clickHandler);
 
 export default renderJobList;
