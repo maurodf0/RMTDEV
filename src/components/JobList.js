@@ -90,7 +90,8 @@ document.querySelectorAll('.job-item--active').forEach(jobItemActive => {
      const id = jobItemEl.children[0].getAttribute('href');
 
      //update the state
-     state.activeJobItem = state.searchJobItems.find(jobItem => jobItem.id === +id);
+     const allJobItems = [...state.searchJobItems, ...state.bookmarkJobItems];
+     state.activeJobItem = allJobItems.find(jobItem => jobItem.id === +id);
 
      //add id to the url
      history.pushState(null, '', `/#${id}`);
