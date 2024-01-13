@@ -12,7 +12,7 @@ import renderSpinner from './Spinner.js';
 import renderError from './Error.js';
 //import BookmarkIconF from './Bookmarks.js';
 
-// create the blueprint of the function that we export and use into the search component
+//create the blueprint of the function that we export and use into the search component
 const renderJobList = (whichJobList = 'search') => {
 
     //determine correct selector for joblist (search or bookmark)
@@ -45,7 +45,7 @@ const renderJobList = (whichJobList = 'search') => {
                     </div>
                 </div>
                 <div class="job-item__right">
-                    <i class="fa-solid fa-bookmark job-item__bookmark-icon"></i>
+                    <i class="fa-solid fa-bookmark job-item__bookmark-icon ${state.bookmarkJobItems.some(bookmarkedJobItem => bookmarkedJobItem.id === jobItem.id) && 'job-item__bookmark-icon--bookmarked'}"></i>
                     <time class="job-item__time">${jobItem.daysAgo}d</time>
                 </div>
             </a>
@@ -79,7 +79,6 @@ document.querySelectorAll('.job-item--active').forEach(jobItemActive => {
     jobItemActive.classList.remove('job-item--active');
 });
 
-   jobItemEl.classList.add('job-item--active');
     // empty the inner html for job detail content
     jobDetailsContentEl.innerHTML = '';
 
@@ -92,6 +91,11 @@ document.querySelectorAll('.job-item--active').forEach(jobItemActive => {
      //update the state
      const allJobItems = [...state.searchJobItems, ...state.bookmarkJobItems];
      state.activeJobItem = allJobItems.find(jobItem => jobItem.id === +id);
+
+     //render job list updated after click in bookmarks
+     renderJobList();
+
+
 
      //add id to the url
      history.pushState(null, '', `/#${id}`);

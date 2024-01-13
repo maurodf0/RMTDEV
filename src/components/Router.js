@@ -6,6 +6,7 @@ import {
 } from '../common.js'
 import renderError from './Error.js';
 import renderJobDetails from './JobDetails.js';
+import renderJobList from './JobList.js';
 import renderSpinner from './Spinner.js';
 
 const loadHashChangeHandler = async () => {
@@ -13,6 +14,11 @@ const loadHashChangeHandler = async () => {
     const id = location.hash.substring(1);
 
     if(id){
+        //remove active class when back happen in broswer
+        document.querySelectorAll('.job-item--active').forEach(jobItemActive => {
+            jobItemActive.classList.remove('job-item--active');
+        });
+        
         // remove previous content
         jobDetailsContentEl.innerHTML = '';
 
@@ -26,6 +32,9 @@ const loadHashChangeHandler = async () => {
 
             //update state
             state.activeJobItem = jobItem;
+
+            //render search job list
+            renderJobList();
 
              //remove the spinner
              renderSpinner('jobDetails');

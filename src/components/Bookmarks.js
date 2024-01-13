@@ -24,6 +24,9 @@ const clickHandler = e => {
     // //update bookmark icon
  document.querySelector('.job-info__bookmark-icon').classList.toggle('job-info__bookmark-icon--bookmarked');
 
+ //render the search job list for icon update
+ renderJobList();
+
 }
 
 const MouseEnterHandler = () => {
